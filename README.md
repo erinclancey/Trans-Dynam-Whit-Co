@@ -4,7 +4,11 @@
 Repository for the R code, Whitman County COVID-19 weekly reports, and Mathematica notebook for the manuscript:
 
 Unexpected Transmission Dynamics in a University Town: Lessons from COVID-19;
-Erin Clancey$^{1,\dagger,\ast}$, Matthew S. Mietchen$^{2,\dagger}$, Corrin McMichael$^3$ and Eric T. Lofgren$^{1}$;
+
+Erin Clancey $^{1,\ast}$
+
+
+Erin Clancey$^{1,\dagger,\ast}$, Matthew S. Mietchen $^{2,\dagger}$, Corrin McMichael$^3$ and Eric T. Lofgren$^{1}$;
 
  $^1$Paul G. Allen School for Global Health, Washington State University, Pullman, WA;
  $^{2}$Carolina Population Center, University of North Carolina, Chapel Hill, NC;
