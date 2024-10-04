@@ -63,7 +63,6 @@ theta.start <- data.frame(cbind(params, sigma, gamma, Ni, Ei0, Ii0, Ri0, Nj, Ej0
 ### Run pMCMC
 
 M=10000 # the number of mcmc iterations to run
-M=100
 start_time <- Sys.time()
 foreach (theta.start=iter(theta.start,"row"), .inorder=FALSE) %dopar% {
   library(pomp)
