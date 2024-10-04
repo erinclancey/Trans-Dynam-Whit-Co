@@ -1,4 +1,4 @@
-setwd("~/Covid_Mat/EC MS")
+setwd("~/Trans-Dynam-Whit-Co")
 source("Whit_Sim_Mech_Model.R")
 
 ############# pMCMC Setup ############# 
