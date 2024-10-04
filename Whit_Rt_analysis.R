@@ -4,7 +4,7 @@ library(EpiEstim)
 library(extrafont)
 library(latex2exp)
 
-setwd("~/Covid_Mat/EC MS")
+setwd("~/Trans-Dynam-Whit-Co")
 
 ###parameter values for latency and recovery and generation interval
 alpha=1/3.59
