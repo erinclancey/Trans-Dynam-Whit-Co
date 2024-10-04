@@ -13,9 +13,7 @@ gamma=1/3.56
 GI_Whit=1/gamma + 1/alpha 
 sd_GI_Whit=sqrt(1/gamma^2 + 1/alpha^2)
 
-
-Whit_Co_daily <- read.csv("Whit_CO_daily.csv", header=TRUE)
-Whit_Co_daily <- subset(Whit_Co_daily, J_date>229+7)
+J_date <- seq(237,362,1)
 
 Whit_Co_weekly <- read.csv("Whit_CO_week.csv", header=TRUE)
 Whit_Co_weekly <- subset(Whit_Co_weekly, Week>34)
@@ -40,7 +38,7 @@ agg_R_Whit <- estimate_R(incid = Whit_Co_weekly$Cases,
                            std_si = sd_GI_Whit)))
 agg_R_Whit_df <- agg_R_Whit$R
 #agg_R_Whit_df <- agg_R_Whit$R[-c(1:7),]
-agg_R_Whit_df$J_date <- Whit_Co_daily$J_date[-c(1:13)]
+agg_R_Whit_df$J_date <- J_date[-c(1:13)]
 filter(agg_R_Whit_df, `Mean(R)` <1)[1,1]
 
 D <- ggplot(agg_R_Whit_df , aes(x=J_date, y=`Mean(R)`)) + theme_minimal()+
@@ -77,7 +75,7 @@ WSU_R_t <- estimate_R(incid = Whit_Co_weekly$WSU_cases,
                            mean_si = GI_Whit, 
                            std_si = sd_GI_Whit)))
 WSU_R_t_df <- WSU_R_t$R
-WSU_R_t_df$J_date <- Whit_Co_daily$J_date[-c(1:13)]
+WSU_R_t_df$J_date <- J_date[-c(1:13)]
 filter(WSU_R_t_df, `Mean(R)` <1)[1,1]
 
 PUL_R_t <- estimate_R(incid = Whit_Co_weekly$PUL_cases,
@@ -92,7 +90,7 @@ PUL_R_t <- estimate_R(incid = Whit_Co_weekly$PUL_cases,
                         mean_si = GI_Whit, 
                         std_si = sd_GI_Whit)))
 PUL_R_t_df <- PUL_R_t$R
-PUL_R_t_df$J_date <- Whit_Co_daily$J_date[-c(1:13)]
+PUL_R_t_df$J_date <- J_date[-c(1:13)]
 filter(PUL_R_t_df, `Mean(R)` <1)[1,1]
 
 G <- ggplot()+
