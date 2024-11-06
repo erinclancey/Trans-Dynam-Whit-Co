@@ -104,7 +104,6 @@ paramnames=c("betai","betaj","betaij","sigma","gamma","k",
 
 read.csv("Whit_CO_week.csv", header=TRUE) %>%
   select(Week,reports_i=WSU_cases, reports_j=PUL_cases) -> WSU_PUL
-WSU_PUL <- WSU_PUL[-1,]
 WSU_PUL %>% as.data.frame() %>% head()
 cases.plot <- ggplot(WSU_PUL, aes(x = Week)) + theme_minimal()+ ylab("Case Reports") + xlab("Week")+
   geom_line(aes(y = reports_i, color = 'reports_i')) + 
@@ -117,7 +116,7 @@ plot(cases.plot)
 
 WSU_PUL %>%
   pomp(
-    times="Week",t0=34,
+    times="Week",t0=33,
     rprocess=euler(SEIR.compart,delta.t=1/7),
     rinit=SEIR_rinit,
     rmeasure=rmeas,             
