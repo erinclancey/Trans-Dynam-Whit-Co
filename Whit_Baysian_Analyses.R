@@ -13,12 +13,12 @@ rw.sd <- setNames(standard.devs, params.est)
 # proposal <- mvn_diag_rw(rw.sd)
 
 # Coviance matrix calculated after the initial run
-rw.var <- matrix(c(0.279665318,  0.002480186, -0.01192454,  0.010768938,
-0.002480186,  0.727658376, -0.09595934,  0.006475304,
--0.011924538, -0.095959344,  0.03121689, -0.018194206,
-0.010768938,  0.006475304, -0.01819421,  0.769467891), nrow = 4, dimnames = list(c("betai","betaj","betaij","k"), c("betai","betaj","betaij","k")))
+# rw.var <- matrix(c(0.246871907,  0.005478273, -0.008473139, -0.01199394,
+0.005478273,  0.654757085, -0.063165625,  0.04503267,
+-0.008473139, -0.063165625,  0.016786347, -0.01549426,
+-0.011993939,  0.045032670, -0.015494263,  0.80268573), nrow = 4, dimnames = list(c("betai","betaj","betaij","k"), c("betai","betaj","betaij","k")))
 
-proposal <- mvn_rw_adaptive(
+# proposal <- mvn_rw_adaptive(
   rw.var=rw.var,
   scale.start = 1,
   scale.cooling = 0.999,
