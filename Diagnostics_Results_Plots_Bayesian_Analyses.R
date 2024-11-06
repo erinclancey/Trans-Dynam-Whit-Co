@@ -2,7 +2,7 @@ setwd("~/Trans-Dynam-Whit-Co")
 source("Whit_Sim_Mech_Model.R")
 
 # Read-in Joint Posterior Distribution
-posterior <- read.csv(file="Joint_Posterior_Distribution.csv", header=TRUE)
+posterior <- read.csv(file="Joint_Posterior_Distribution_33.csv", header=TRUE)
 M=10000
 
 ### Post-process the chains
