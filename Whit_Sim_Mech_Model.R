@@ -101,7 +101,7 @@ paramnames=c("betai","betaj","betaij","sigma","gamma","k",
 
 
 ############# Weekly Case Data - THE REAL DATA ############# 
-
+# NOTE: population i = WSU students; population j = community members
 read.csv("Whit_CO_week.csv", header=TRUE) %>%
   select(Week,reports_i=WSU_cases, reports_j=PUL_cases) -> WSU_PUL
 WSU_PUL %>% as.data.frame() %>% head()
