@@ -2,13 +2,8 @@ setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision/Final code and figure
 source("Whit_Sim_Mech_Model_2_m.R")
 
 # Read-in Joint Posterior Distribution
-#posterior <- read.csv(file="posterior_revision.csv", header=TRUE)
-# Split the data frame into two parts
-# posterior_first_half <- posterior[1:(floor(nrow(posterior)/2)+1), ]
-# posterior_second_half <- posterior[floor((nrow(posterior)/2) + 2):nrow(posterior), ]
-
-posterior1 <- read.csv(file="posterior_migrate_first_half.csv", header=TRUE)
-posterior2 <- read.csv(file="posterior_migrate_second_half.csv", header=TRUE)
+posterior1 <- read.csv(file="posterior_m_first_half.csv", header=TRUE)
+posterior2 <- read.csv(file="posterior_m_second_half.csv", header=TRUE)
 posterior <- rbind(posterior1,posterior2)
 
 posterior$m <- round(posterior$m)
