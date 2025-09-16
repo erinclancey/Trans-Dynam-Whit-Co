@@ -1,4 +1,4 @@
-setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision")
+setwd("~/Trans-Dynam-Whit-Co-main")
 source("Whit_Sim_Mech_Model_2_m.R")
 
 
@@ -253,4 +253,5 @@ for (i in 1:nrow(sim_study_df)){
       mCI[i]==0
     }
 }
+
 
