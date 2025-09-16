@@ -1,4 +1,4 @@
-setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision")
+setwd("~/Trans-Dynam-Whit-Co-main")
 source("Whit_Sim_Mech_Model_2_m.R")
 
 
@@ -72,3 +72,4 @@ B <- ggplot() + theme_minimal() +
 
 plot <- plot_grid(A,B, ncol = 1, nrow =2 , rel_heights=c(1,1), labels = c('A', 'B'))
 plot(plot)
+
