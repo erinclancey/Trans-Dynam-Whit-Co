@@ -1,5 +1,5 @@
 
-setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision")
+setwd("~/Trans-Dynam-Whit-Co-main")
 source("Whit_Sim_Mech_Model_2_m.R")
 
 ############# Weekly Case Data - THE REAL DATA ############# 
@@ -112,6 +112,7 @@ for(i in seq_along(list_results_pmcmc)){
 posterior <- do.call(rbind, list_results_pmcmc)
 ### Export pMCMC Results
 #write.csv(posterior, file="posterior_revision_migrate.csv")
+
 
 
 
