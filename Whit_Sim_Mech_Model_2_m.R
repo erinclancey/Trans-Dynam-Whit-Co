@@ -35,7 +35,6 @@ library(readr)
 library(stringr)
 library(forcats)
 library(lhs)
-set.seed(320)
 
 # dir.create("tmp")
 # options(pomp_cdir="./tmp")

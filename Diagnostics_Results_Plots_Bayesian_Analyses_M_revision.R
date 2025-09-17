@@ -1,9 +1,14 @@
-setwd("~/Trans-Dynam-Whit-Co-main")
+setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision/Final code and figures for revision")
 source("Whit_Sim_Mech_Model_2_m.R")
 
 # Read-in Joint Posterior Distribution
-posterior1 <- read.csv(file="posterior_m_first_half.csv", header=TRUE)
-posterior2 <- read.csv(file="posterior_m_second_half.csv", header=TRUE)
+#posterior <- read.csv(file="posterior_revision.csv", header=TRUE)
+# Split the data frame into two parts
+# posterior_first_half <- posterior[1:(floor(nrow(posterior)/2)+1), ]
+# posterior_second_half <- posterior[floor((nrow(posterior)/2) + 2):nrow(posterior), ]
+
+posterior1 <- read.csv(file="posterior_migrate_first_half.csv", header=TRUE)
+posterior2 <- read.csv(file="posterior_migrate_second_half.csv", header=TRUE)
 posterior <- rbind(posterior1,posterior2)
 
 posterior$m <- round(posterior$m)
@@ -49,7 +54,7 @@ chains.long <- melt(chains, id=c("chain", "iter"))
 plot_names <- as_labeller(c('betai' = "paste(beta)[u]",
                             'betaj' = "paste(beta)[c]",
                             'betaij' = "paste(beta)[m]",
-                            'k' = "paste(k)",
+                            'k' = "paste(theta)",
                             'm' = "paste(m(t))"),label_parsed)
 upc <- ggplot(chains.long, aes(x = iter, y = value, group=chain )) + 
   geom_line(aes(color=chain)) + 
@@ -128,7 +133,7 @@ plot <- plot_grid(P,Q, ncol = 2, rel_widths=c(1,1))
 plot(plot)
 
 
-plot_names.2 <- as_labeller(c('k' = "paste(k)",'m' = "paste(m(t))"),label_parsed)
+plot_names.2 <- as_labeller(c('k' = "paste(theta)",'m' = "paste(m(t))"),label_parsed)
 mode.2 <- modes[-c(1,2,3),]
 processed.long.3 <- subset(processed.long, variable =="k" | variable =="m")
 P.2 <- ggplot(processed.long.3, aes(x = value)) + theme_minimal()+
@@ -140,5 +145,4 @@ P.2 <- ggplot(processed.long.3, aes(x = value)) + theme_minimal()+
   theme(strip.text = element_text(size=20), axis.title.x = element_text(size = 10), axis.title.y = element_text(size = 18), 
         panel.spacing=unit(0, "lines"), plot.margin=unit(c(0.5, 0.5, 0.5, 0.5), 'cm'))
 plot(P.2)
-
 

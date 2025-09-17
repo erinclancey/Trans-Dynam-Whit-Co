@@ -1,5 +1,5 @@
 
-setwd("~/Trans-Dynam-Whit-Co-main")
+setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision/Final code and figures for revision")
 source("Whit_Sim_Mech_Model_2_m.R")
 
 ############# Weekly Case Data - THE REAL DATA ############# 
@@ -69,14 +69,14 @@ colnames(params) <- names
 sigma=rep(7/3.59,n)
 gamma=rep(7/3.56,n)
 rho <- 0.76
-Ni=rep(14254,n)
+Ni=rep(14321,n)
 Ei0=rep(floor(79/rho),n)
 Ii0=rep(floor(79/rho),n)
-Ri0=rep(floor(0.041*14254),n)
-Nj=rep(20785,n)
+Ri0=rep(floor(0.041*14321),n)
+Nj=rep(33719,n)
 Ej0=rep(floor(2/rho),n)
 Ij0=rep(floor(2/rho),n)
-Rj0=rep(floor(0.041*20785),n)
+Rj0=rep(floor(0.041*33719),n)
 
 
 ### Create starting values data frame
@@ -84,12 +84,11 @@ Rj0=rep(floor(0.041*20785),n)
 theta.start <- data.frame(cbind(params, sigma, gamma, Ni, Ei0, Ii0, Ri0, Nj, Ej0, Ij0, Rj0))
 ### Run pMCMC
 
-M=50 # the number of mcmc iterations to run
+M=50000 # the number of mcmc iterations to run
 start_time <- Sys.time()
 foreach (theta.start=iter(theta.start,"row"), .inorder=FALSE) %dopar% {
   library(pomp)
   library(magrittr)
-  set.seed(320)
   SEIR %>% pmcmc(Nmcmc=M,
                  proposal=proposal,
                  Np=2000,
@@ -110,9 +109,9 @@ for(i in seq_along(list_results_pmcmc)){
 }
 
 posterior <- do.call(rbind, list_results_pmcmc)
+
 ### Export pMCMC Results
 #write.csv(posterior, file="posterior_revision_migrate.csv")
-
-
+#write.csv(posterior, file="posterior_revision_33719.csv")
 
 

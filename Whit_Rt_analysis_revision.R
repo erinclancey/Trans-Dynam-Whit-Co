@@ -4,7 +4,7 @@ library(EpiEstim)
 library(extrafont)
 library(latex2exp)
 # install.packages('EpiEstim', repos = c('https://mrc-ide.r-universe.dev', 'https://cloud.r-project.org'))
-setwd("~/Trans-Dynam-Whit-Co-main")
+setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision/Final code and figures for revision")
 
 
 ###parameter values for latency and recovery and generation interval

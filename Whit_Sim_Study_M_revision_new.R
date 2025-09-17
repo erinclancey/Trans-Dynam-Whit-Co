@@ -1,4 +1,4 @@
-setwd("~/Trans-Dynam-Whit-Co-main")
+setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision/Final code and figures for revision")
 source("Whit_Sim_Mech_Model_2_m.R")
 
 
@@ -16,8 +16,8 @@ empty_data <- pomp(data=Data,
                   accumvars=accumvars,
                   statenames=statenames,
                   paramnames=paramnames)
-###############set uptrue  parameter grid#########
-n=100
+###############set up true  parameter grid#########
+n=25
 names=c("betai","betaj","betaij","k","m")
 Y <- randomLHS(n, length(names))
 Y[,1] <- qunif(Y[,1], 9.81, 12.24)
@@ -123,7 +123,6 @@ M=10000 # the number of mcmc iterations to run
 foreach (theta.start=iter(theta.start,"row"), .inorder=FALSE) %dopar% {
   library(pomp)
   library(magrittr)
-  set.seed(320)
   SEIR %>% pmcmc(Nmcmc=M,
                  proposal=proposal,
                  Np=1000,
@@ -142,6 +141,7 @@ for(k in seq_along(list_results_pmcmc)){
 }
 
 posterior <- do.call(rbind, list_results_pmcmc)
+write.csv(posterior, file= paste('result_',i,".csv",sep = ""))
 
 post <- posterior %>% 
   dplyr::select(betai,betaj,betaij,k,m, chain, iter)
@@ -150,7 +150,7 @@ mcmc.list <- mcmc.list(list())
 for(j in seq_along(post.list)){
   mcmc.list[[j]] <- mcmc(post.list[[j]])
 }
-processed <- window(mcmc.list, start=30, end=M+1, thin=80) 
+processed <- window(mcmc.list, start=100, end=M+1, thin=50) 
 processed <- data.frame(do.call(rbind, processed))
 
 betai_mode=as.vector(posterior.mode(mcmc(processed$betai), adjust=1))
@@ -177,54 +177,89 @@ sim_study[i,] <- result
 print(i)
 
 }
-
 sim_study_df <- cbind(sim_study, pars)
 
-#write.csv(sim_study_df , file="sim_study_df .csv")
+sim_study_df <- read.csv(file="sim_study_df.csv", header=TRUE)
 
+
+umod <- summary(lm(betai_mode ~ betai , data = sim_study_df))
+cmod <- summary(lm(betaj_mode ~ betaj , data = sim_study_df))
+mixmod <- summary(lm(betaij_mode ~ betaij , data = sim_study_df))
+kmod <- summary(lm(k_mode ~ k , data = sim_study_df))
+mmod <- summary(lm(m_mode ~ m , data = sim_study_df))
+umod
+cmod
+mixmod
+kmod
+mmod
+
+round(c(umod$coefficients[2,1]-umod$coefficients[2,2]*1.96,umod$coefficients[2,1]+umod$coefficients[2,2]*1.96),2)
+round(c(cmod$coefficients[2,1]-cmod$coefficients[2,2]*1.96,cmod$coefficients[2,1]+cmod$coefficients[2,2]*1.96),2)
+round(c(mixmod$coefficients[2,1]-mixmod$coefficients[2,2]*1.96,mixmod$coefficients[2,1]+mixmod$coefficients[2,2]*1.96),2)
+round(c(kmod$coefficients[2,1]-kmod$coefficients[2,2]*1.96,kmod$coefficients[2,1]+kmod$coefficients[2,2]*1.96),2)
+round(c(mmod$coefficients[2,1]-mmod$coefficients[2,2]*1.96,mmod$coefficients[2,1]+mmod$coefficients[2,2]*1.96),2)
+
+round(c(umod$coefficients[1,1]-umod$coefficients[2,1]*1.96,umod$coefficients[1,1]+umod$coefficients[2,1]*1.96),2)/100000
+round(c(cmod$coefficients[1,1]-cmod$coefficients[2,1]*1.96,cmod$coefficients[1,1]+cmod$coefficients[2,1]*1.96),2)/100000
+round(c(mixmod$coefficients[1,1]-mixmod$coefficients[2,1]*1.96,mixmod$coefficients[2,1]+mixmod$coefficients[2,2]*1.96),2)/100000
+round(c(kmod$coefficients[1,1]-kmod$coefficients[2,1]*1.96,kmod$coefficients[1,1]+kmod$coefficients[2,1]*1.96),2)
+round(c(mmod$coefficients[1,1]-mmod$coefficients[2,1]*1.96,mmod$coefficients[1,1]+mmod$coefficients[2,1]*1.96),2)
 
 p1 <- ggplot(sim_study_df, aes(x=betai/100000, y=betai_mode/100000)) +
   geom_point(color="#CC79A7", shape=20, size=3) +
   xlab(TeX("$\\beta_u$")) + ylab(TeX("$\\hat{\\beta}_u$"))+
-  geom_abline(intercept = 0, slope = 1, linetype=1, color="black")+
-  xlim(c(0,0.00015))+ylim(c(0,0.00015))+
+  geom_abline(intercept = 0, slope = 1, linetype=2, color="black")+
+  geom_abline(intercept = umod$coefficients[1,1]/100000, slope = umod$coefficients[2,1], 
+              linetype=1, color="#CC79A7", size=1)+
+  xlim(c(0.000075,0.00014))+ylim(c(0.000075,0.00014))+
   theme_bw()+theme(text = element_text(size = 12),
                    axis.title =element_text(size = 16) )
+
 
 p2 <- ggplot(sim_study_df, aes(x=betaj/100000, y=betaj_mode/100000)) +
   geom_point( color="#0072B2",shape=20, size=3) +
   xlab(TeX("$\\beta_c$")) + ylab(TeX("$\\hat{\\beta}_c$"))+
-  geom_abline(intercept = 0, slope = 1, linetype=1, color="black")+
-  xlim(c(0,0.00015))+ylim(c(0,0.00015))+
+  geom_abline(intercept = 0, slope = 1, linetype=2, color="black")+
+  geom_abline(intercept = cmod$coefficients[1,1]/100000, slope = cmod$coefficients[2,1], 
+              linetype=1, color="#0072B2", size=1)+
+  xlim(c(0.00001,0.00013))+ylim(c(0.00001,0.00013))+
   theme_bw()+theme(text = element_text(size = 12),
                    axis.title =element_text(size = 16) )
 
 p3 <- ggplot(sim_study_df, aes(x=betaij/100000, y=betaij_mode/100000)) +
   geom_point( color="#009E73",shape=20, size=3) +
   xlab(TeX("$\\beta_m$")) + ylab(TeX("$\\hat{\\beta}_m$"))+
-  geom_abline(intercept = 0, slope = 1, linetype=1, color="black")+
-  xlim(c(0,0.00003))+ylim(c(0,0.00003))+
+  geom_abline(intercept = 0, slope = 1, linetype=2, color="black")+
+  geom_abline(intercept = mixmod$coefficients[1,1]/100000, slope = mixmod$coefficients[2,1], 
+              linetype=1, color="#009E73", size=1)+
+  xlim(c(0,0.000008))+ylim(c(0,0.000008))+
   theme_bw()+theme(text = element_text(size = 12),
                    axis.title =element_text(size = 16) )
 
 p4 <- ggplot(sim_study_df, aes(x=k, y=k_mode)) +
   geom_point(color="#999999", shape=20, size=3) +
   xlab(TeX("$k$")) + ylab(TeX("$\\hat{k}$"))+
-  geom_abline(intercept = 0, slope = 1, linetype=1, color="black")+
-  xlim(c(0,6))+ylim(c(0,6))+
+  geom_abline(intercept = 0, slope = 1, linetype=2, color="black")+
+  geom_abline(intercept = kmod$coefficients[1,1], slope = kmod$coefficients[2,1], 
+              linetype=1, color="#999999", size=1)+
+  xlim(c(0,15))+ylim(c(0,15))+
   theme_bw()+theme(text = element_text(size = 12),
                    axis.title =element_text(size = 16) )
 
 p5 <- ggplot(sim_study_df, aes(x=m, y=m_mode)) +
   geom_point(color="#D55E00", shape=20, size=3) +
   xlab(TeX("$m$")) + ylab(TeX("$\\hat{m}$"))+
-  geom_abline(intercept = 0, slope = 1, linetype=1, color="black")+
-  xlim(c(5,15))+ylim(c(5,15))+
+  geom_abline(intercept = 0, slope = 1, linetype=2, color="black")+
+  geom_abline(intercept = mmod$coefficients[1,1], slope = mmod$coefficients[2,1], 
+              linetype=1, color="#D55E00", size=1)+
+  xlim(c(0,30))+ylim(c(0,30))+
   theme_bw()+theme(text = element_text(size = 12),
                    axis.title =element_text(size = 16) )
 
 ggarrange(p1,p2,p3,p4,p5,
           ncol = 3, nrow = 2)
+
+
 
 betaiCI <- vector()
 betajCI <- vector()
@@ -232,26 +267,31 @@ betaijCI <- vector()
 kCI <- vector()
 mCI <- vector()
 for (i in 1:nrow(sim_study_df)){
-  if(sim_study_df$betai>=betai_low && sim_study_df$betai<=betai_hi){
-    betaiCI[i]==1} else{
-      betaiCI[i]==0
+  if(sim_study_df$betai[i] >=sim_study_df$betai_low[i] && sim_study_df$betai[i]<=sim_study_df$betai_hi[i]){
+    betaiCI[i]=1} else{
+      betaiCI[i]=0
     }
-  if(sim_study_df$betaj>=betaj_low && sim_study_df$betaj<=betaj_hi){
-    betajCI[i]==1} else{
-      betajCI[i]==0
+  if(sim_study_df$betaj[i]>=sim_study_df$betaj_low[i] && sim_study_df$betaj[i]<=sim_study_df$betaj_hi[i]){
+    betajCI[i]=1} else{
+      betajCI[i]=0
     }
-  if(sim_study_df$betaij>=betai_low && sim_study_df$betaij<=betaij_hi){
-    betaijCI[i]==1} else{
-      betaijCI[i]==0
+  if(sim_study_df$betaij[i]>=sim_study_df$betaij_low[i] && sim_study_df$betaij[i]<=sim_study_df$betaij_hi[i]){
+    betaijCI[i]=1} else{
+      betaijCI[i]=0
     }
-  if(sim_study_df$k>=k_low && sim_study_df$k<=k_hi){
-    kCI[i]==1} else{
-      kCI[i]==0
+  if(sim_study_df$k[i]>=sim_study_df$k_low[i] && sim_study_df$k[i]<=sim_study_df$k_hi[i]){
+    kCI[i]=1} else{
+      kCI[i]=0
     }
-  if(sim_study_df$m>=m_low && sim_study_df$m<=m_hi){
-    mCI[i]==1} else{
-      mCI[i]==0
+  if(sim_study_df$m[i]>=sim_study_df$m_low[i] && sim_study_df$m[i]<=sim_study_df$m_hi[i]){
+    mCI[i]=1} else{
+      mCI[i]=0
     }
 }
 
+sum(betaiCI)
+sum(betajCI)
+sum(betaijCI)
+sum(kCI)
+sum(mCI)
 
