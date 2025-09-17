@@ -1,4 +1,4 @@
-setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision/Final code and figures for revision")
+setwd("~/Trans-Dynam-Whit-Co-main")
 source("Whit_Sim_Mech_Model_2_m.R")
 
 # Read-in Joint Posterior Distribution
@@ -145,4 +145,5 @@ P.2 <- ggplot(processed.long.3, aes(x = value)) + theme_minimal()+
   theme(strip.text = element_text(size=20), axis.title.x = element_text(size = 10), axis.title.y = element_text(size = 18), 
         panel.spacing=unit(0, "lines"), plot.margin=unit(c(0.5, 0.5, 0.5, 0.5), 'cm'))
 plot(P.2)
+
 
