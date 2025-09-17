@@ -73,3 +73,4 @@ B <- ggplot() + theme_minimal() +
 plot <- plot_grid(A,B, ncol = 1, nrow =2 , rel_heights=c(1,1), labels = c('A', 'B'))
 plot(plot)
 
+
