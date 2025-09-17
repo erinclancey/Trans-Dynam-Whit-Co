@@ -1,4 +1,4 @@
-setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision/Final code and figures for revision")
+setwd("~/Trans-Dynam-Whit-Co-main")
 source("Whit_Sim_Mech_Model_2_m.R")
 
 
@@ -294,4 +294,5 @@ sum(betajCI)
 sum(betaijCI)
 sum(kCI)
 sum(mCI)
+
 
