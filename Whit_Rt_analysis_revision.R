@@ -4,7 +4,7 @@ library(EpiEstim)
 library(extrafont)
 library(latex2exp)
 # install.packages('EpiEstim', repos = c('https://mrc-ide.r-universe.dev', 'https://cloud.r-project.org'))
-setwd("~/Covid_Mat/EC MS/Trans-Dynam-Whit-Co-main_revision/Final code and figures for revision")
+setwd("~/Trans-Dynam-Whit-Co-main")
 
 
 ###parameter values for latency and recovery and generation interval
@@ -108,4 +108,5 @@ plot(G)
 
 plot3 <- plot_grid(C,D,E,G, ncol = 2, nrow =2 , rel_heights=c(1,1,1,1,1,1), labels = c('A','', 'B'))
 plot(plot3)
+
 
